@@ -6,11 +6,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      turn: "X",
-      gameEnded: false,
+
       winner: undefined,
     };
     this.gameState = {
+      turn: "X",
+      gameEnded: false,
       board: Array(9).fill(""),
       totalMoves: 0
     }
@@ -18,52 +19,49 @@ class App extends Component {
 
 
   clicked = (event) => {
+
+
+//stop l'ecriture apres victoire
+//si false impossible d'aller plus loin dans la function
+    if(this.gameState.gameEnded) return;
     //si l'index de board est vide, rempli la avec X ou O
-    if (this.gameState.board[event.target.dataset.square] === "") {
+    if (this.gameState.board[event.dataset.square] === "") {
       //insere le turn dans le tableau de board
-      this.gameState.board[event.target.dataset.square] = this.state.turn;
+      this.gameState.board[event.dataset.square] = this.gameState.turn;
       //ecrit dans la div le state.turn
-      event.target.innerText = this.state.turn;
+      event.innerText = this.gameState.turn;
       //change la valeur a chaque fois et met a jour le board
-      this.setState({
-        turn: this.state.turn === "X" ? "O" : "X",
-        totalMoves : this.gameState.totalMoves +1
-      }, () => {
-        console.log(this.gameState.totalMoves)
-      })
+      this.gameState.turn = this.gameState.turn === "X" ? "O" : "X",
       this.gameState.totalMoves++;
 
     }
     var result = this.checkWinner();
     //si le tab renvoyé est 3 x "X"
     if (result === "X") {
+      this.gameState.gameEnded = true;
       this.setState({
-        gameEnded: true,
         winner: "X",
-        htmlWinner : "Le gagnat est X !"
-
-      }, () => {
-        console.log(this.state.winner)
+        htmlWinner: "Le gagnat est X !"
       })
 
       //si le tab renvoyé est 3 x "X"
     } else if (result === "O") {
+      this.gameState.gameEnded = true;
+
       this.setState({
-        gameEnded: true,
         winner: "O",
-        htmlWinner : "Le gagnat est O !"
-
-      }, () => {
-        console.log(this.state.winner)
+        htmlWinner: "Le gagnat est O !"
       })
+    } else if (result === "Draw"){
+      this.gameState.gameEnded = true;
 
-    } else if (result === "Draw")
-    this.setState({
-      gameEnded :true,
-      winner : "Draw",
-      htmlWinner : "Egalité !"
-    })
+      this.setState({
+        winner: "Draw",
+        htmlWinner: "Egalité !"
+      })
     // console.log(this.state.gameEnded)
+    }
+   
   }
 
   checkWinner = () => {
@@ -78,9 +76,9 @@ class App extends Component {
         return board[moves[i][0]];
         // console.log("board", board[moves[i][0]])
       }
-     
+
     }
-    if(this.gameState.totalMoves === 9) {
+    if (this.gameState.totalMoves === 9) {
       return "Draw"
     }
   }
@@ -91,7 +89,7 @@ class App extends Component {
         <div id="head">
           <h1>Morpion</h1>
         </div>
-        <div id="board" onClick={(e) => this.clicked(e)}>
+        <div id="board" onClick={(e) => this.clicked(e.target)}>
           <div className="square" data-square="0"></div>
           <div className="square" data-square="1"></div>
           <div className="square" data-square="2"></div>
@@ -103,8 +101,8 @@ class App extends Component {
           <div className="square" data-square="8"></div>
         </div>
         <div className="status">
-        <h2>{this.state.htmlWinner}</h2>
-        
+          <h2>{this.state.htmlWinner}</h2>
+
         </div>
       </div>
     );
