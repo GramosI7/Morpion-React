@@ -26,9 +26,9 @@ class App extends Component {
       this.setState({
         turn: this.state.turn === "X" ? "O" : "X",
         board: this.state.board,
-        totalMoves: this.state.totalMoves++
+        totalMoves: this.state.totalMoves +1
       }, () => {
-        // console.log(this.state.board)
+        console.log(this.state.totalMoves)
       })
     }
     var result = this.checkWinner();
@@ -36,7 +36,9 @@ class App extends Component {
     if (result === "X") {
       this.setState({
         gameEnded: true,
-        winner: "X"
+        winner: "X",
+        htmlWinner : "Le gagnat est X !"
+
       }, () => {
         console.log(this.state.winner)
       })
@@ -45,12 +47,19 @@ class App extends Component {
     } else if (result === "O") {
       this.setState({
         gameEnded: true,
-        winner: "O"
+        winner: "O",
+        htmlWinner : "Le gagnat est O !"
+
       }, () => {
         console.log(this.state.winner)
       })
 
-    }
+    } else if (result === "Draw")
+    this.setState({
+      gameEnded :true,
+      winner : "Draw",
+      htmlWinner : "Egalité !"
+    })
     // console.log(this.state.gameEnded)
   }
 
@@ -61,11 +70,16 @@ class App extends Component {
     //boucle de moves = combinaisons win
     for (let i = 0; i < moves.length; i++) {
       //si un des tableau on trois fois la meme valeur alors return le tableau avec la combinaison win
+      //ex: [0,3,6] === ["X","X","X"]
       if (board[moves[i][0]] === board[moves[i][1]] && board[moves[i][1]] === board[moves[i][2]]) {
         return board[moves[i][0]];
         // console.log("board", board[moves[i][0]])
       }
+       if(this.state.totalMoves === 9) {
+      return "Draw"
     }
+    }
+   
   }
 
   render() {
@@ -85,7 +99,10 @@ class App extends Component {
           <div className="square" data-square="7"></div>
           <div className="square" data-square="8"></div>
         </div>
-        <h2>Le gagnant est {this.state.winner}</h2>
+        <div className="status">
+        <h2>{this.state.htmlWinner}</h2>
+        
+        </div>
       </div>
     );
   }
