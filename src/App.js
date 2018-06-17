@@ -9,6 +9,8 @@ class App extends Component {
       turn: "X",
       gameEnded: false,
       winner: undefined,
+    };
+    this.gameState = {
       board: Array(9).fill(""),
       totalMoves: 0
     }
@@ -17,19 +19,20 @@ class App extends Component {
 
   clicked = (event) => {
     //si l'index de board est vide, rempli la avec X ou O
-    if (this.state.board[event.target.dataset.square] === "") {
+    if (this.gameState.board[event.target.dataset.square] === "") {
       //insere le turn dans le tableau de board
-      this.state.board[event.target.dataset.square] = this.state.turn;
+      this.gameState.board[event.target.dataset.square] = this.state.turn;
       //ecrit dans la div le state.turn
       event.target.innerText = this.state.turn;
       //change la valeur a chaque fois et met a jour le board
       this.setState({
         turn: this.state.turn === "X" ? "O" : "X",
-        board: this.state.board,
-        totalMoves: this.state.totalMoves +1
+        totalMoves : this.gameState.totalMoves +1
       }, () => {
-        console.log(this.state.totalMoves)
+        console.log(this.gameState.totalMoves)
       })
+      this.gameState.totalMoves++;
+
     }
     var result = this.checkWinner();
     //si le tab renvoyé est 3 x "X"
@@ -66,7 +69,7 @@ class App extends Component {
   checkWinner = () => {
     //toutes les combinaisons win
     const moves = [[0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6], [0, 1, 2], [3, 4, 5], [6, 7, 8]];
-    var board = this.state.board;
+    var board = this.gameState.board;
     //boucle de moves = combinaisons win
     for (let i = 0; i < moves.length; i++) {
       //si un des tableau on trois fois la meme valeur alors return le tableau avec la combinaison win
@@ -75,11 +78,11 @@ class App extends Component {
         return board[moves[i][0]];
         // console.log("board", board[moves[i][0]])
       }
-       if(this.state.totalMoves === 9) {
+     
+    }
+    if(this.gameState.totalMoves === 9) {
       return "Draw"
     }
-    }
-   
   }
 
   render() {
