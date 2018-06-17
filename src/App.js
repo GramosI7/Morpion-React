@@ -12,18 +12,21 @@ class App extends Component {
     this.gameState = {
       turn: "X",
       gameEnded: false,
+      gameLocked: false,
       board: Array(9).fill(""),
-      totalMoves: 0
+      totalMoves: 0,
+      titlePhrase: "",
     }
   }
 
+  gameStateOrigin = this.gameState;
 
   clicked = (event) => {
 
 
-//stop l'ecriture apres victoire
-//si false impossible d'aller plus loin dans la function
-    if(this.gameState.gameEnded) return;
+    //stop l'ecriture apres victoire
+    //si false impossible d'aller plus loin dans la function
+    if (this.gameState.gameEnded || this.gameState.gameLocked) return;
     //si l'index de board est vide, rempli la avec X ou O
     if (this.gameState.board[event.dataset.square] === "") {
       //insere le turn dans le tableau de board
@@ -32,8 +35,8 @@ class App extends Component {
       event.innerText = this.gameState.turn;
       //change la valeur a chaque fois et met a jour le board
       this.gameState.turn = this.gameState.turn === "X" ? "O" : "X",
-      this.gameState.totalMoves++;
-
+        this.gameState.totalMoves++;
+      console.log(this.gameState)
     }
     var result = this.checkWinner();
     //si le tab renvoyé est 3 x "X"
@@ -41,7 +44,7 @@ class App extends Component {
       this.gameState.gameEnded = true;
       this.setState({
         winner: "X",
-        htmlWinner: "Le gagnat est X !"
+        htmlWinner: "Bien joué !"
       })
 
       //si le tab renvoyé est 3 x "X"
@@ -50,18 +53,36 @@ class App extends Component {
 
       this.setState({
         winner: "O",
-        htmlWinner: "Le gagnat est O !"
+        htmlWinner: "Ta perdu ...",
+        littlePhrase: "La honte ...  T'as perdu contre une IA"
       })
-    } else if (result === "Draw"){
+    } else if (result === "Draw") {
       this.gameState.gameEnded = true;
 
       this.setState({
         winner: "Draw",
         htmlWinner: "Egalité !"
       })
-    // console.log(this.state.gameEnded)
+      // console.log(this.state.gameEnded)
     }
-   
+    //si c'est au tour de "O" et que la partie n'est pas fini
+    if (this.gameState.turn === "O" && !this.gameState.gameEnded) {
+      this.gameState.gameLocked = true;
+      //attend 1seconde
+      setTimeout(() => {
+        //faire 
+        do {
+          //var random 
+          var random = Math.floor(Math.random() * 9);
+          //ecrire dans le tableau board du state 
+        } while (this.gameState.board[random] !== "");
+        this.gameState.gameLocked = false;
+        //ajoute a la div
+        this.clicked(document.querySelectorAll(".square")[random])
+      }, 700);
+
+
+    }
   }
 
   checkWinner = () => {
@@ -83,6 +104,10 @@ class App extends Component {
     }
   }
 
+  reset = () => {
+   window.location.reload();
+  }
+
   render() {
     return (
       <div id="game">
@@ -102,7 +127,10 @@ class App extends Component {
         </div>
         <div className="status">
           <h2>{this.state.htmlWinner}</h2>
-
+          <h2>{this.state.littlePhrase}</h2>
+        </div>
+        <div className="btn">
+          <button onClick={this.reset}>Reset</button>
         </div>
       </div>
     );

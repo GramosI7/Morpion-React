@@ -2,6 +2,7 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  background: #34495e;
 }
 
 #board {
@@ -18,13 +19,15 @@
   justify-content: center;
   align-items: center;
   font-size: 50px;
+  color: #d35400;
   cursor: pointer;
   /* impossible de surligner */
   user-select: none;
 }
 
 .square:hover {
-  background:  #eee;
+  background:  #192a56;
+  transition: 500ms;
 }
 
 #game {
@@ -61,6 +64,27 @@
 .square:nth-child(3n) {
   border-right: 0px;
 }
+.status {
+  margin: 20px auto 0px;
+}
+h2:first-child{
+  user-select: none;
 
+}
+h2:last-child{
+  font-size: 4px;
+  text-align: center;
+  user-select: none;
 
+}
 
+button {
+  margin: 20px auto;
+  border-radius: 10%;
+  background: #2c3e50;
+  color: #eee;
+  border: 2px solid #d35400;
+  padding: 05px;
+  user-select: none;
+
+}
