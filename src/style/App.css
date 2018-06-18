@@ -1,0 +1,93 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  background: #34495e;
+}
+
+#board {
+  display: flex;
+  width: 300px;
+  flex-wrap: wrap;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+  color: #d35400;
+  cursor: pointer;
+  /* impossible de surligner */
+  user-select: none;
+}
+
+.square:hover {
+  background:  #192a56;
+  transition: 500ms;
+}
+
+#game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#head {
+  font-size: 25px;
+  padding: 15px;
+}
+
+.square:nth-child(1) , .square:nth-child(2), .square:nth-child(3) {
+  border-top: 0px;
+}
+
+.square:nth-child(7) , .square:nth-child(8), .square:nth-child(9) {
+  border-bottom: 0px;
+}
+
+/* .square:nth-child(4) , .square:nth-child(7) {
+  border-left: 0px;
+}
+
+.square:nth-child(6) , .square:nth-child(9) {
+  border-right: 0px;
+} */
+
+.square:nth-child(3n+1) {
+  border-left: 0px;
+}
+.square:nth-child(3n) {
+  border-right: 0px;
+}
+.status {
+  margin: 20px auto 0px;
+}
+h2:first-child{
+  user-select: none;
+
+}
+h2:last-child{
+  font-size: 4px;
+  text-align: center;
+  user-select: none;
+
+}
+
+button {
+  margin: 20px auto;
+  border-radius: 10%;
+  background: #2c3e50;
+  color: #eee;
+  border: 2px solid #d35400;
+  padding: 05px;
+  user-select: none;
+}
+
+.title {
+  margin: 20px;
+}
